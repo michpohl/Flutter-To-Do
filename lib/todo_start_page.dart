@@ -52,7 +52,7 @@ class _ToDoStartPageState extends State<ToDoStartPage> {
   void _openAddEntryDialog() {
     Navigator.of(context).push(new MaterialPageRoute<Null>(
         builder: (BuildContext context) {
-          return new AddEntryDialog();
+          return new AddTodDoItemDialog();
         },
         fullscreenDialog: true
     ));
