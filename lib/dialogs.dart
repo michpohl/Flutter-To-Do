@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_to_do/task.dart';
+import 'package:flutter_to_do/database_handler.dart';
+
 
 class AddTodDoItemDialog extends StatefulWidget {
   @override
@@ -7,10 +10,25 @@ class AddTodDoItemDialog extends StatefulWidget {
 
 class AddToDoItemDialogState extends State<AddTodDoItemDialog> {
 
-  String title;
-  String description;
-  String listName;
-  DateTime dueDate;
+  String _title;
+  String _description;
+  String _listName;
+  DateTime _dueDate;
+
+  void _saveTaskAndReturn() {
+
+    DataBaseHandler dataHandler = new DataBaseHandler();
+    Task newTask = new Task(
+      title: _title,
+      description: _description,
+      listName: _listName,
+      dueDate: _dueDate,
+    );
+
+    dataHandler.saveTask(newTask);
+
+    Navigator.of(context).pop(null);
+  }
 
 
   @override
@@ -21,7 +39,7 @@ class AddToDoItemDialogState extends State<AddTodDoItemDialog> {
 
         ),
         floatingActionButton: new FloatingActionButton(
-            onPressed: null,
+            onPressed: _saveTaskAndReturn,
             child: new Icon(Icons.check)),
         body: new Column(
           children: <Widget>[
@@ -35,7 +53,7 @@ class AddToDoItemDialogState extends State<AddTodDoItemDialog> {
                   focusNode: null,
                   style: null,
                   onSubmitted: (text) {
-                    title = text;
+                    _title = text;
                   }),
 
             ),
@@ -49,7 +67,7 @@ class AddToDoItemDialogState extends State<AddTodDoItemDialog> {
                 focusNode: null,
                 style: null,
                 onSubmitted: (text) {
-                  description = text;
+                  _description = text;
                 },
               ),
             ),
