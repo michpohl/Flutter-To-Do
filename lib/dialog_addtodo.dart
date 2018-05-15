@@ -28,6 +28,7 @@ class AddToDoItemDialogState extends State<AddTodDoItemDialog> {
     dataHandler.saveTask(newTask);
 
     Navigator.of(context).pop(null);
+    dataHandler.getAllTasks();
   }
 
 

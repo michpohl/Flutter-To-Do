@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_to_do/dialogs.dart';
+import 'package:flutter_to_do/dialog_addtodo.dart';
 import 'package:flutter_to_do/task.dart';
 
 class ToDoStartPage extends StatefulWidget {
