@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_to_do/database_handler.dart';
 import 'package:flutter_to_do/dialog_addtodo.dart';
 import 'package:flutter_to_do/task.dart';
 
@@ -44,7 +47,8 @@ class _ToDoStartPageState extends State<ToDoStartPage> {
   _getItems() async {
     if (!mounted) return;
 
-    await itemsState.getFromApi();
+    //    await itemsState.getFromApi();
+    await _testGetAll();
     setState(() {
 
     });
@@ -58,12 +62,19 @@ class _ToDoStartPageState extends State<ToDoStartPage> {
     ));
   }
 
+  Future<void> _testGetAll() {
+    var dh = new DataBaseHandler();
+    dh.getAllTasks();
+    return;
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
         appBar: new AppBar(title: new Text('BlaBla')),
         floatingActionButton: new FloatingActionButton(
-            onPressed: _openAddEntryDialog,
+//            onPressed: _openAddEntryDialog,
+        onPressed: _testGetAll,
             child: new Icon(Icons.add),
         ),
         body: _getCurrentStateWidget()
