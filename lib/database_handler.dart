@@ -1,13 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter_to_do/task.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DataBaseHandler {
-
-
   DataBaseHandler();
 
   // for testing stuff
@@ -27,23 +24,43 @@ class DataBaseHandler {
     }
   }
 
-
-  Future<Set<Task>> getAllTasks() async {
+  Future<List<Task>> getAllTasks() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    Set<Task> taskSet = new Set<Task>();
-    Set<String> taskJsonAsStringSet = new Set<String>();
+    List<Task> taskSet = new List<Task>();
+    List<String> taskJsonAsStringSet = new List<String>();
 
     Set<String> keys = prefs.getKeys();
-    keys.forEach((key)  =>  print(prefs.getString(key)));
-    keys.forEach((key)  =>  taskJsonAsStringSet.add(prefs.getString(key)));
-    taskJsonAsStringSet.forEach((task)  =>  taskSet.add(decodeJsonTask(task)));
-        return taskSet;
+    keys.forEach((key) => print(prefs.getString(key)));
+    keys.forEach((key) => taskJsonAsStringSet.add(prefs.getString(key)));
+    taskJsonAsStringSet.forEach((task) {
+      taskSet.add(decodeJsonTask(task));
+//      print("Adding task: " + decodeJsonTask(task).title.);
+    });
+    print ("getAllTasks done.");
+    return taskSet;
+  }
 
-    }
+  Task decodeJsonTask(String task) {
+    Map decodedTask = json.decode(task);
+    Task resultTask = new Task();
+    print("decoded: " + decodedTask.toString());
+    decodedTask.forEach((key, value) {
+      switch (key) {
+        case "title":
+          resultTask.title = value;
+          break;
+        case "description":
+          resultTask.description = value;
+          break;
+        case "due_date":
+          resultTask.dueDate = value;
+          break;
+        case "list_name":
+          resultTask.listName = value;
+          break;
+      }
+    });
 
-    Task decodeJsonTask(String task) {
-      Map decodedTask = json.decode(task);
-      print("decoded: " + decodedTask.toString());
-    }
-
+    return resultTask;
+  }
 }

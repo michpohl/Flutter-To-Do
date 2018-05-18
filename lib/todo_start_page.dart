@@ -6,7 +6,6 @@ import 'package:flutter_to_do/dialog_addtodo.dart';
 import 'package:flutter_to_do/task.dart';
 
 class ToDoStartPage extends StatefulWidget {
-
   @override
   _ToDoStartPageState createState() => new _ToDoStartPageState();
 }
@@ -15,9 +14,7 @@ class _ToDoStartPageState extends State<ToDoStartPage> {
   final ItemsState itemsState = new ItemsState();
 
   Widget _getLoadingSteWidget() {
-    return new Center(
-        child: new CircularProgressIndicator()
-    );
+    return new Center(child: new CircularProgressIndicator());
   }
 
   Widget _getCurrentStateWidget() {
@@ -32,9 +29,9 @@ class _ToDoStartPageState extends State<ToDoStartPage> {
   }
 
   Widget _getSuccessStateWidget() {
+    itemsState.items.forEach((x) => print(x.title.toString()));
     return new Center(
-        child: new Text(itemsState.items.length.toString() + ' items found!')
-    );
+        child: new Text(itemsState.items.length.toString() + ' items found!'));
   }
 
   @override
@@ -46,26 +43,21 @@ class _ToDoStartPageState extends State<ToDoStartPage> {
 
   _getItems() async {
     if (!mounted) return;
-
-    //    await itemsState.getFromApi();
-    await _testGetAll();
-    setState(() {
-
-    });
+    await itemsState.getFromApi();
+    setState(() {});
   }
+
   void _openAddEntryDialog() {
     Navigator.of(context).push(new MaterialPageRoute<Null>(
         builder: (BuildContext context) {
           return new AddTodDoItemDialog();
         },
-        fullscreenDialog: true
-    ));
+        fullscreenDialog: true));
   }
 
-  Future<void> _testGetAll() {
+  Future<List<Task>> _testGetAll() {
     var dh = new DataBaseHandler();
-    dh.getAllTasks();
-    return;
+    return dh.getAllTasks();
   }
 
   @override
@@ -74,10 +66,9 @@ class _ToDoStartPageState extends State<ToDoStartPage> {
         appBar: new AppBar(title: new Text('BlaBla')),
         floatingActionButton: new FloatingActionButton(
 //            onPressed: _openAddEntryDialog,
-        onPressed: _testGetAll,
-            child: new Icon(Icons.add),
+          onPressed: _testGetAll,
+          child: new Icon(Icons.add),
         ),
-        body: _getCurrentStateWidget()
-    );
+        body: _getCurrentStateWidget());
   }
 }

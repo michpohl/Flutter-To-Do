@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:flutter_to_do/database_handler.dart';
+
 class Task {
   String title;
   String description;
@@ -48,11 +50,15 @@ class ItemsState {
 
 
   Future <void> getFromApi() async  {
-  this.items = [
-  new Task(title: "Test", description: 'Dies ist ein Test', dueDate: new DateTime.utc(1989, DateTime.november, 9), listName: 'name'),
-  new Task(title: "Test", description: 'Dies ist ein Test', dueDate: new DateTime.utc(1989, DateTime.november, 9), listName: 'name'),
-  new Task(title: "Test", description: 'Dies ist ein Test', dueDate: new DateTime.utc(1989, DateTime.november, 9), listName: 'name'),
-  ];
+//  this.items = [
+//  new Task(title: "Test", description: 'Dies ist ein Test', dueDate: new DateTime.utc(1989, DateTime.november, 9), listName: 'name'),
+//  new Task(title: "Test", description: 'Dies ist ein Test', dueDate: new DateTime.utc(1989, DateTime.november, 9), listName: 'name'),
+//  new Task(title: "Test", description: 'Dies ist ein Test', dueDate: new DateTime.utc(1989, DateTime.november, 9), listName: 'name'),
+//  ];
+
+  DataBaseHandler dh = new DataBaseHandler();
+  this.items =  await dh.getAllTasks();
+  print(this.items.toString());
   this.loading = false;
   this.error = false;
   }
