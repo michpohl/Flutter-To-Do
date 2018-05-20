@@ -30,12 +30,13 @@ class Task {
         listName = json['list_name'];
 }
 
-class ItemsState {
+// TODO where should I put this class? I feel it's wrong here
+class TasksState {
   List<Task> items;
   bool loading;
   bool error;
 
-  ItemsState({
+  TasksState({
     this.items = const [],
     this.loading = true,
     this.error = false,
@@ -47,14 +48,7 @@ class ItemsState {
     this.error = false;
   }
 
-
-
   Future <void> getFromApi() async  {
-//  this.items = [
-//  new Task(title: "Test", description: 'Dies ist ein Test', dueDate: new DateTime.utc(1989, DateTime.november, 9), listName: 'name'),
-//  new Task(title: "Test", description: 'Dies ist ein Test', dueDate: new DateTime.utc(1989, DateTime.november, 9), listName: 'name'),
-//  new Task(title: "Test", description: 'Dies ist ein Test', dueDate: new DateTime.utc(1989, DateTime.november, 9), listName: 'name'),
-//  ];
 
   DataBaseHandler dh = new DataBaseHandler();
   this.items =  await dh.getAllTasks();

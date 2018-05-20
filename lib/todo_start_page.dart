@@ -11,7 +11,7 @@ class ToDoStartPage extends StatefulWidget {
 }
 
 class _ToDoStartPageState extends State<ToDoStartPage> {
-  final ItemsState itemsState = new ItemsState();
+  final TasksState tasksState = new TasksState();
 
   Widget _getLoadingSteWidget() {
     return new Center(child: new CircularProgressIndicator());
@@ -20,7 +20,7 @@ class _ToDoStartPageState extends State<ToDoStartPage> {
   Widget _getCurrentStateWidget() {
     Widget currentStateWidget;
 
-    if (!itemsState.error && !itemsState.loading) {
+    if (!tasksState.error && !tasksState.loading) {
       currentStateWidget = _getSuccessStateWidget();
     } else {
       currentStateWidget = _getLoadingSteWidget();
@@ -29,9 +29,8 @@ class _ToDoStartPageState extends State<ToDoStartPage> {
   }
 
   Widget _getSuccessStateWidget() {
-    itemsState.items.forEach((x) => print(x.title.toString()));
-    return new Center(
-        child: new Text(itemsState.items.length.toString() + ' items found!'));
+    tasksState.items.forEach((x) => print(x.title.toString()));
+    return new Center(child: new Column(children: _listOfTaskWidgets()));
   }
 
   @override
@@ -41,9 +40,24 @@ class _ToDoStartPageState extends State<ToDoStartPage> {
     _getItems();
   }
 
+  List<Widget> _listOfTaskWidgets() {
+    List<Widget> taskWidgets = new List<Widget>();
+    tasksState.items.forEach((x) {
+      if (x.title != null) {
+        taskWidgets.add(new ListTile(
+          leading: new Text("Datum"),
+          title: new Text("x.title"),
+          subtitle: new Text("Description"),
+          trailing: new Text("x.listName"),
+        ));
+      }
+    });
+    return taskWidgets;
+  }
+
   _getItems() async {
     if (!mounted) return;
-    await itemsState.getFromApi();
+    await tasksState.getFromApi();
     setState(() {});
   }
 
