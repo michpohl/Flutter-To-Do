@@ -56,9 +56,6 @@ class _ToDoStartPageState extends State<ToDoStartPage> {
     });
     return taskWidgets;
   }
- void test() {
-    print("Test seems to work");
-}
 
   _updateTaskList() async {
     if (!mounted) return;
@@ -68,7 +65,6 @@ class _ToDoStartPageState extends State<ToDoStartPage> {
   }
 
   void _deleteSelectedItem(Task task) async{
-    print ("_deleteSelectedItem");
     DataBaseHandler dh = new DataBaseHandler();
     await dh.deleteTask(task);
     _updateTaskList();
@@ -85,7 +81,6 @@ class _ToDoStartPageState extends State<ToDoStartPage> {
             fullscreenDialog: true));
 
     if (result) {
-      print("Result: " + result.toString());
       _updateTaskList();
     }
 

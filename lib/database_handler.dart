@@ -12,11 +12,9 @@ class DataBaseHandler {
 
 //  TODO prevent saving two tasks with thesame title
   Future<void> saveTask(Task task) async {
-    print("We're in the save method, saving task with name: " + task.title);
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     String taskAsJsonString = json.encode(task);
-    print("This is the task: " + taskAsJsonString);
     if (task.title != null) {
       prefs.setString(task.title, taskAsJsonString);
       await pause(const Duration(milliseconds: 1000));
@@ -29,13 +27,9 @@ class DataBaseHandler {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     if (prefs.getString(task.title) != null) {
-      print("This task exists in prefs.");
       await prefs.remove(task.title);
     }
-    if (prefs.getString(task.title) != null) {
-      print ("This task still exists in prefs. This is an error"); }
-
-  }
+     }
 
   int _getIndexOfTaskInTaskList(List<Task> taskList, String name) {
     int result = -1;
@@ -71,7 +65,6 @@ class DataBaseHandler {
   Task decodeJsonTask(String task) {
     Map decodedTask = json.decode(task);
     Task resultTask = new Task();
-    print("decoded: " + decodedTask.toString());
     decodedTask.forEach((key, value) {
       switch (key) {
         case "title":
