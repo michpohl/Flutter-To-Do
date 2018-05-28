@@ -31,7 +31,7 @@ class AddToDoItemDialogState extends State<AddTodDoItemDialog> {
     print(json.encode(newTask).toString());
     await dataHandler.saveTask(newTask);
 
-    Navigator.of(context).pop(null);
+    Navigator.pop(context, true);
     dataHandler.getAllTasks();
     isWorking = true;
   }

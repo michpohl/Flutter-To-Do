@@ -30,15 +30,16 @@ class _ToDoStartPageState extends State<ToDoStartPage> {
 
   Widget _getSuccessStateWidget() {
     tasksState.items.forEach((x) => print(x.title.toString()));
-    return new Center(child: new Column(children: _listOfTaskWidgets()));
+    return new Center(child: new ListView(children: _listOfTaskWidgets()));
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _getItems();
   }
+
+
 
   List<Widget> _listOfTaskWidgets() {
     List<Widget> taskWidgets = new List<Widget>();
@@ -46,7 +47,7 @@ class _ToDoStartPageState extends State<ToDoStartPage> {
       if (x.title != null) {
         taskWidgets.add(new ListTile(
           leading: new Text("Datum"),
-          title: new Text("x.title"),
+          title: new Text(x.title),
           subtitle: new Text("Description"),
           trailing: new Text("x.listName"),
         ));
@@ -57,16 +58,26 @@ class _ToDoStartPageState extends State<ToDoStartPage> {
 
   _getItems() async {
     if (!mounted) return;
+
     await tasksState.getFromApi();
     setState(() {});
   }
 
-  void _openAddEntryDialog() {
-    Navigator.of(context).push(new MaterialPageRoute<Null>(
-        builder: (BuildContext context) {
-          return new AddTodDoItemDialog();
-        },
-        fullscreenDialog: true));
+  void _openAddEntryDialog() async {
+    final result = await Navigator.push(
+        context,
+        new MaterialPageRoute<dynamic>(
+            // remember: using dynamic prevents the navigator assertion error (line 1846)
+            builder: (BuildContext context) {
+              return new AddTodDoItemDialog();
+            },
+            fullscreenDialog: true));
+
+    if (result) {
+      print("Result: " + result.toString());
+      _getItems();
+    }
+    ;
   }
 
   Future<List<Task>> _testGetAll() {
@@ -79,8 +90,7 @@ class _ToDoStartPageState extends State<ToDoStartPage> {
     return new Scaffold(
         appBar: new AppBar(title: new Text('BlaBla')),
         floatingActionButton: new FloatingActionButton(
-//            onPressed: _openAddEntryDialog,
-          onPressed: _testGetAll,
+          onPressed: _openAddEntryDialog,
           child: new Icon(Icons.add),
         ),
         body: _getCurrentStateWidget());

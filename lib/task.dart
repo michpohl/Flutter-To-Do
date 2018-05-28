@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_to_do/database_handler.dart';
 
 class Task {
@@ -31,7 +32,7 @@ class Task {
 }
 
 // TODO where should I put this class? I feel it's wrong here
-class TasksState {
+class TasksState extends ValueNotifier {
   List<Task> items;
   bool loading;
   bool error;
@@ -40,7 +41,7 @@ class TasksState {
     this.items = const [],
     this.loading = true,
     this.error = false,
-  });
+  }) : super(null);
 
   void reset() {
     this.items = [];
