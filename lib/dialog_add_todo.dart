@@ -15,11 +15,31 @@ class AddToDoItemDialogState extends State<AddTodDoItemDialog> {
   String _listName;
   DateTime _dueDate;
   bool hasTaskName = false;
+  bool taskNameAlreadyTaken = false;
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool isWorking = false;
 
   //TODO make sure all the strings get SUBMITTED first
+  void _taskNameAlreadyTaken(_title) async {
+    DataBaseHandler dh = new DataBaseHandler();
+    List<Task> savedTasks = await dh.getAllTasks();
+
+    taskNameAlreadyTaken =  null;
+
+    savedTasks.forEach((task) {
+      print("TaskName to compare with: " + task.title.toString());
+      if (task.title == _title) {
+        print("Found one that is the same!");
+        taskNameAlreadyTaken = true;
+      }
+    });
+    print("Already taken? " +  taskNameAlreadyTaken.toString());
+      }
+
   void _saveTaskAndReturn() async {
+
+
     isWorking = true;
     DataBaseHandler dh = new DataBaseHandler();
     Task newTask = new Task(
@@ -83,25 +103,42 @@ class AddToDoItemDialogState extends State<AddTodDoItemDialog> {
     );
   }
 
+  @override
+  Widget build(BuildContext context) {
+    if (hasTaskName) {
+      return new Scaffold(
+          appBar: new AppBar(
+            title: const Text('Add new task'),
+          ),
+          floatingActionButton: new Builder(
+            // Create an inner BuildContext so that the onPressed methods
+            // can refer to the Scaffold with Scaffold.of().
+            builder: (BuildContext context) {
+              return new FloatingActionButton(
+                  child: new Icon(Icons.check),
+                onPressed: () {
+                  _taskNameAlreadyTaken(_title);
+                  if (taskNameAlreadyTaken) {
+                    Scaffold.of(context).showSnackBar(new SnackBar(
+                          content: new Text('This name is already taken.'),
+                        ));
+                  } else if (taskNameAlreadyTaken != null){
+                    print ("else");
+                    _saveTaskAndReturn();
+                  }
+                },
+              );
+            },
+          ),
 
-
-    @override
-    Widget build(BuildContext context) {
-      if (hasTaskName) {
-        return new Scaffold(
-            appBar: new AppBar(
-              title: const Text('Add new task'),
-            ),
-            floatingActionButton: new FloatingActionButton(
-                onPressed: _saveTaskAndReturn, child: new Icon(Icons.check)),
-            body: _getCurrentStateWidget());
-      } else {
-        return new Scaffold(
-            appBar: new AppBar(
-              title: const Text('Add new task'),
-            ),
-
-            body: _getCurrentStateWidget());
-      }
+//
+          body: _getCurrentStateWidget());
+    } else {
+      return new Scaffold(
+          appBar: new AppBar(
+            title: const Text('Add new task'),
+          ),
+          body: _getCurrentStateWidget());
     }
   }
+}
