@@ -49,6 +49,12 @@ class TasksState extends ValueNotifier {
     this.error = false;
   }
 
+  Future <void> deleteTast(String name) async {
+    DataBaseHandler dh = new DataBaseHandler();
+
+
+  }
+
   Future <void> getFromApi() async  {
 
   DataBaseHandler dh = new DataBaseHandler();

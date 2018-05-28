@@ -21,7 +21,7 @@ class AddToDoItemDialogState extends State<AddTodDoItemDialog> {
   //TODO make sure all the strings get SUBMITTED first
   void _saveTaskAndReturn() async {
     isWorking = true;
-    DataBaseHandler dataHandler = new DataBaseHandler();
+    DataBaseHandler dh = new DataBaseHandler();
     Task newTask = new Task(
       title: _title,
       description: _description,
@@ -29,10 +29,10 @@ class AddToDoItemDialogState extends State<AddTodDoItemDialog> {
       dueDate: _dueDate,
     );
     print(json.encode(newTask).toString());
-    await dataHandler.saveTask(newTask);
+    await dh.saveTask(newTask);
 
     Navigator.pop(context, true);
-    dataHandler.getAllTasks();
+    dh.getAllTasks();
     isWorking = true;
   }
 

@@ -36,31 +36,42 @@ class _ToDoStartPageState extends State<ToDoStartPage> {
   @override
   void initState() {
     super.initState();
-    _getItems();
+    _updateTaskList();
   }
 
 
 
   List<Widget> _listOfTaskWidgets() {
     List<Widget> taskWidgets = new List<Widget>();
-    tasksState.items.forEach((x) {
-      if (x.title != null) {
+    tasksState.items.forEach((task) {
+      if (task.title != null) {
         taskWidgets.add(new ListTile(
           leading: new Text("Datum"),
-          title: new Text(x.title),
+          title: new Text(task.title),
           subtitle: new Text("Description"),
-          trailing: new Text("x.listName"),
+//          trailing: new Text("x.listName"),
+        trailing: new FlatButton(onPressed: () => _deleteSelectedItem(task), child: new Text("Delete")),
         ));
       }
     });
     return taskWidgets;
   }
+ void test() {
+    print("Test seems to work");
+}
 
-  _getItems() async {
+  _updateTaskList() async {
     if (!mounted) return;
 
     await tasksState.getFromApi();
     setState(() {});
+  }
+
+  void _deleteSelectedItem(Task task) async{
+    print ("_deleteSelectedItem");
+    DataBaseHandler dh = new DataBaseHandler();
+    await dh.deleteTask(task);
+    _updateTaskList();
   }
 
   void _openAddEntryDialog() async {
@@ -75,15 +86,11 @@ class _ToDoStartPageState extends State<ToDoStartPage> {
 
     if (result) {
       print("Result: " + result.toString());
-      _getItems();
+      _updateTaskList();
     }
-    ;
+
   }
 
-  Future<List<Task>> _testGetAll() {
-    var dh = new DataBaseHandler();
-    return dh.getAllTasks();
-  }
 
   @override
   Widget build(BuildContext context) {
