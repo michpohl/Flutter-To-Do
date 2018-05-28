@@ -34,24 +34,10 @@ class DataBaseHandler {
     }
     if (prefs.getString(task.title) != null) {
       print ("This task still exists in prefs. This is an error"); }
-//
-//    print("We're in the delete method, deleting the task named: " +
-//        task.title.toString());
-//    List<Task> currentTasks = await getAllTasks();
-//    int taskIndex = _indexOfTaskInTaskList(currentTasks, task.title);
-//print("index of that task is: "+ taskIndex.toString());
-//    if ( taskIndex != -1) {
-//      print("Removing task from List...");
-//      print("before removal: " + currentTasks.length.toString());
-//      currentTasks.removeAt(taskIndex);
-//      print ("after removal: " + currentTasks.length.toString());
-//    }
-//
-//
-//    _saveNewTasklist(currentTasks);
+
   }
 
-  int _indexOfTaskInTaskList(List<Task> taskList, String name) {
+  int _getIndexOfTaskInTaskList(List<Task> taskList, String name) {
     int result = -1;
     taskList.forEach((task) {
       if (task.title == name) {
