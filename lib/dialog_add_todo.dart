@@ -14,9 +14,9 @@ class AddToDoItemDialogState extends State<AddTodDoItemDialog> {
   String _description;
   String _listName;
   DateTime _dueDate;
+  bool hasTaskName = false;
 
   bool isWorking = false;
-
 
   //TODO make sure all the strings get SUBMITTED first
   void _saveTaskAndReturn() async {
@@ -56,6 +56,7 @@ class AddToDoItemDialogState extends State<AddTodDoItemDialog> {
               style: null,
               onSubmitted: (text) {
                 _title = text;
+                hasTaskName = true;
               }),
         ),
         new ListTile(
@@ -82,14 +83,25 @@ class AddToDoItemDialogState extends State<AddTodDoItemDialog> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-        appBar: new AppBar(
-          title: const Text('Add new task'),
-        ),
-        floatingActionButton: new FloatingActionButton(
-            onPressed: _saveTaskAndReturn, child: new Icon(Icons.check)),
-        body: _getCurrentStateWidget());
+
+
+    @override
+    Widget build(BuildContext context) {
+      if (hasTaskName) {
+        return new Scaffold(
+            appBar: new AppBar(
+              title: const Text('Add new task'),
+            ),
+            floatingActionButton: new FloatingActionButton(
+                onPressed: _saveTaskAndReturn, child: new Icon(Icons.check)),
+            body: _getCurrentStateWidget());
+      } else {
+        return new Scaffold(
+            appBar: new AppBar(
+              title: const Text('Add new task'),
+            ),
+
+            body: _getCurrentStateWidget());
+      }
+    }
   }
-}
