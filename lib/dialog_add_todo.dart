@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -21,11 +22,11 @@ class AddToDoItemDialogState extends State<AddTodDoItemDialog> {
   bool isWorking = false;
 
   //TODO make sure all the strings get SUBMITTED first
-  void _taskNameAlreadyTaken(_title) async {
+  Future<bool> _taskNameAlreadyTaken(_title) async {
     DataBaseHandler dh = new DataBaseHandler();
     List<Task> savedTasks = await dh.getAllTasks();
 
-    taskNameAlreadyTaken =  null;
+    taskNameAlreadyTaken = false;
 
     savedTasks.forEach((task) {
       print("TaskName to compare with: " + task.title.toString());
@@ -34,12 +35,11 @@ class AddToDoItemDialogState extends State<AddTodDoItemDialog> {
         taskNameAlreadyTaken = true;
       }
     });
-    print("Already taken? " +  taskNameAlreadyTaken.toString());
-      }
+    print("Already taken? " + taskNameAlreadyTaken.toString());
+    return taskNameAlreadyTaken;
+  }
 
   void _saveTaskAndReturn() async {
-
-
     isWorking = true;
     DataBaseHandler dh = new DataBaseHandler();
     Task newTask = new Task(
@@ -115,15 +115,14 @@ class AddToDoItemDialogState extends State<AddTodDoItemDialog> {
             // can refer to the Scaffold with Scaffold.of().
             builder: (BuildContext context) {
               return new FloatingActionButton(
-                  child: new Icon(Icons.check),
-                onPressed: () {
-                  _taskNameAlreadyTaken(_title);
-                  if (taskNameAlreadyTaken) {
+                child: new Icon(Icons.check),
+                onPressed: () async {
+                  if (await _taskNameAlreadyTaken(_title) == true) {
                     Scaffold.of(context).showSnackBar(new SnackBar(
                           content: new Text('This name is already taken.'),
                         ));
-                  } else if (taskNameAlreadyTaken != null){
-                    print ("else");
+                  } else {
+                    print("else");
                     _saveTaskAndReturn();
                   }
                 },
