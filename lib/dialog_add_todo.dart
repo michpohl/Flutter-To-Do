@@ -16,26 +16,20 @@ class AddToDoItemDialogState extends State<AddTodDoItemDialog> {
   String _listName;
   DateTime _dueDate;
   bool hasTaskName = false;
-  bool taskNameAlreadyTaken = false;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool isWorking = false;
 
-  //TODO make sure all the strings get SUBMITTED first
   Future<bool> _taskNameAlreadyTaken(_title) async {
     DataBaseHandler dh = new DataBaseHandler();
     List<Task> savedTasks = await dh.getAllTasks();
-
-    taskNameAlreadyTaken = false;
+    bool taskNameAlreadyTaken = false;
 
     savedTasks.forEach((task) {
-      print("TaskName to compare with: " + task.title.toString());
       if (task.title == _title) {
-        print("Found one that is the same!");
         taskNameAlreadyTaken = true;
       }
     });
-    print("Already taken? " + taskNameAlreadyTaken.toString());
     return taskNameAlreadyTaken;
   }
 
@@ -44,9 +38,9 @@ class AddToDoItemDialogState extends State<AddTodDoItemDialog> {
     DataBaseHandler dh = new DataBaseHandler();
     Task newTask = new Task(
       title: _title,
-      description: _description,
-      listName: _listName,
-      dueDate: _dueDate,
+      description: _getDescription(),
+      listName: _getListName(),
+      dueDate: _getDueDate(),
     );
     print(json.encode(newTask).toString());
     await dh.saveTask(newTask);
@@ -54,6 +48,19 @@ class AddToDoItemDialogState extends State<AddTodDoItemDialog> {
     Navigator.pop(context, true);
     dh.getAllTasks();
     isWorking = true;
+  }
+
+
+  String _getDescription() {
+    return _description ?? "No description entered.";
+  }
+
+  String _getListName() {
+    return _listName ?? "No list selected";
+  }
+
+  DateTime _getDueDate() {
+    return _dueDate;
   }
 
   Widget _getCurrentStateWidget() {

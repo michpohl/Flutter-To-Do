@@ -46,11 +46,11 @@ class _ToDoStartPageState extends State<ToDoStartPage> {
     tasksState.items.forEach((task) {
       if (task.title != null) {
         taskWidgets.add(new ListTile(
-          leading: new Text("Datum"),
+          leading: new Text(task.dueDate?.toString() ?? "No due date"),
           title: new Text(task.title),
-          subtitle: new Text("Description"),
+          subtitle: new Text(task.description),
 //          trailing: new Text("x.listName"),
-        trailing: new FlatButton(onPressed: () => _deleteSelectedItem(task), child: new Text("Delete")),
+        trailing: new FlatButton(onPressed: () => _deleteSelectedItem(task), child: new Text("Delute")),
         ));
       }
     });
