@@ -80,7 +80,7 @@ class _ToDoStartPageState extends State<ToDoStartPage> {
             },
             fullscreenDialog: true));
 
-    if (result) {
+    if (result != null) {
       _updateTaskList();
     }
 
